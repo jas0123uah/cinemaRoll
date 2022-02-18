@@ -57,10 +57,10 @@ block content
                                         span= hasCurrentReview.Reviews[0].reviewText
                                 div.revButtons
                                     form(type="submit" method="get" action=`/movies/${movieObj.id}/reviews/${hasCurrentReviewId}/edit` id="formForedit")
-                                        button(class="util_btn" href=`/movies/${movieObj.id}/reviews/${hasCurrentReviewId}/edit`) Edit your review
+                                        button(class="util_btn" id="editButton" href=`/movies/${movieObj.id}/reviews/${hasCurrentReviewId}/edit`) Edit review
                                     
-                                    form(type="submit" method="post" action=`/movies/${movieObj.id}/reviews/${hasCurrentReviewId}/delete` id="formFordelete")
-                                        button(type="submit" id="deleteButton") Delete review
+                                    form(type="submit" method="post" action=`/movies/${movieObj.id}/reviews/${hasCurrentReviewId}/delete` id="formFordelete" )
+                                        button(type="submit" class="util_btn" id="deleteButton") Delete review
                                 
                         p
                     else

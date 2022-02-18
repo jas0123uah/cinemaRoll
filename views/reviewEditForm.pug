@@ -34,7 +34,7 @@ block content
         .mainContent
             .reviewContent
                 .smallHeadingContainerReview 
-                    h2.smallHeading Edit Your Review!
+                    h2(id="editYourReview" class="smallHeading") Edit Review 
                 .reviewContainer
                     form(type="submit" method="post" action=`/movies/${movieId}/reviews/${review.id}/`)
                         .form_wrap

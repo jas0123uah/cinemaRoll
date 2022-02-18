@@ -146,3 +146,6 @@ h1 {
     transition: 500ms;
     width: 100px;
 }
+button.util_btn#deleteButton, button.util_btn#editButton{
+    min-height: 30px;
+}

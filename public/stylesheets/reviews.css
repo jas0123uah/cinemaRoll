@@ -23,8 +23,11 @@
 #formFordelete{
     display: inline-block;
 }
+h2.smallHeading#editYourReview{
+    text-align: left;
+}
 
-#deleteButton {
+/* #deleteButton {
     display: grid;
     height: 30px;
     width: 180px;
@@ -44,7 +47,7 @@
     text-decoration: none;
     letter-spacing: 3px;
     border-radius: 5px;
-}
+} */
 
 
 .smallHeadingContainerReview .smallHeading {
