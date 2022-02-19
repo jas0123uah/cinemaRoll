@@ -6,12 +6,9 @@
 //      br
 
 div(id="genre-container")
-  h2(class="search-header" id="search-header") Search and browse movies
-  input(id="search" class="search-bar" placeholder="Search for a movie.")
+  h2(class="search-header" id="search-header") Browse movies by genre
   each genreArray, genreArrayIndex in genres
     div(id="genres-" + (genreArrayIndex + 1))
       each genre in genreArray
         a(href= "/genres/" + genre.name.replace(" ", "%20"))= genre.name
         br
-
-
