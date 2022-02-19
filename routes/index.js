@@ -33,8 +33,9 @@ router.post('/search', asyncHandler(async (req, res) => {
       },
     },
   });
+  res.json({ results })
 
-  return res.render('searchResults', { results});
+  // return res.render('searchResults', { results});
 }));
 
 module.exports = router;

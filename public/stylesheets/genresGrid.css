@@ -1,10 +1,9 @@
 #genre-container{
     display: grid;
-    grid-template-rows: 30px 35px 100px;
+    grid-template-rows: 30px 100px;
     grid-template-columns: repeat(4, 150px);
     grid-template-areas:
         ". a a ."
-        ". b b ."
         "c d e f";
     row-gap: 10px;
 }
