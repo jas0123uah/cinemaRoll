@@ -106,8 +106,11 @@ router.get("/:id(\\d+)", asyncHandler(async (req, res, next) => {
     })
   }
   const csrfToken = req.csrfToken()
-  if (hasCurrentReview.Reviews){
-    hasCurrentReview.Reviews[0].dataValues.createdAt = removeTimeFromLoggedInUserReview(hasCurrentReview.Reviews[0].dataValues.createdAt)
+  if(hasCurrentReview){
+    if (hasCurrentReview.Reviews){
+      hasCurrentReview.Reviews[0].dataValues.createdAt = removeTimeFromLoggedInUserReview(hasCurrentReview.Reviews[0].dataValues.createdAt)
+    }
+
   }
 
 
