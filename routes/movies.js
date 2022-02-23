@@ -300,22 +300,22 @@ router.get('/:id(\\d+)/reviews/:reviewId(\\d+)/edit',csurfProtection, asyncHandl
     res.redirect(`/users/login/`)
 
   }
-  const movie = await db.Movie.findByPk(movieId);
-  const ratingDecimal = (movie.popularity / 1000).toFixed(2);
-  //added finding users associated with each review for "By Jim Regan"
-  const review = await db.Review.findByPk(reviewId)
+    const movie = await db.Movie.findByPk(movieId);
+    const ratingDecimal = (movie.popularity / 1000).toFixed(2);
+    //added finding users associated with each review for "By Jim Regan"
+    const review = await db.Review.findByPk(reviewId)
 
-  if (!review) {
-    next(createError(404))
-  }
+    if (!review) {
+      next(createError(404))
+    }
 
-  res.render("reviewEditForm", {
-    csrfToken: req.csrfToken(),
-    movieId,
-    movieObj: movie,
-    ratingDecimal, genreMovies,
-    review
-  });
+    res.render("reviewEditForm", {
+      csrfToken: req.csrfToken(),
+      movieId,
+      movieObj: movie,
+      ratingDecimal, genreMovies,
+      review
+    });
 
 
 }));
@@ -324,38 +324,85 @@ router.get('/:id(\\d+)/reviews/:reviewId(\\d+)/edit',csurfProtection, asyncHandl
 router.post('/:id(\\d+)/reviews/:reviewId(\\d+)/', csurfProtection, movieValidators, asyncHandler( async (req, res) => {
   //Edit a specific movie review
 
+  const movieId = req.params.id
+  const reviewId = req.params.reviewId
+
 
   const specificReview = await db.Review.findByPk(req.params.reviewId)
     if (!specificReview) {
     next(createError(404))
   }
+  const {
+        userRating,
+        title,
+        reviewText,
+    
+      } = req.body;
 
-    const userId = specificReview.userId
-    const movieId = req.params.id
-    if (userId == req.session.auth.userId) {
-      const {
-      userRating,
-      title,
-      reviewText,
+  const validatorErrors = validationResult(req);
+  console.log(validatorErrors, "ERRORS")
 
-    } = req.body;
+  if (validatorErrors.isEmpty()){
+    try{
+      const userId = specificReview.userId
+      if (userId == req.session.auth.userId) {
+    
+      const review = {
+        title,
+        reviewText,
+        movieId,
+        userId,
+        userRating
+      };
+        await specificReview.update(review);
+    
+    
+        res.redirect(`/movies/${movieId}/`);
 
-    const review = {
-      title,
-      reviewText,
-      movieId,
-      userId,
-      userRating
-    };
-      await specificReview.update(review);
-
-
-      res.redirect(`/movies/${movieId}/`);
-
-    }else{
-       res.redirect('/users/login');
 
     }
+
+
+  
+    }catch (err) {
+        res.redirect(`/movies/${movieId}/` );
+  
+    }
+  }
+  
+  else {
+      const errors = validatorErrors.array().map((error) => error.msg);
+      console.error(errors)
+      const review = await db.Review.findByPk(reviewId)
+    
+
+      const movie = await db.Movie.findByPk(movieId)
+      const genreId = await db.genresToMovieJoinTable.findOne({
+    where: { movieId: movieId },
+  });
+      const genreMovies = await db.Movie.findAll({
+    order: [db.Sequelize.fn("RANDOM")],
+    limit: 9,
+    include: { model: db.Genre, where: { id: genreId.genreId } },
+  });
+      const ratingDecimal = (movie.popularity / 1000).toFixed(2);
+      res.render('reviewEditForm', {
+        movieId,
+        title,
+        review,
+        reviewText, // needed?
+        errors,
+        userRating, //needed? 
+        movieObj:movie,
+        ratingDecimal,
+        genreMovies,
+        csrfToken: req.csrfToken(),
+
+
+
+      });
+    }
+
 
 
 
