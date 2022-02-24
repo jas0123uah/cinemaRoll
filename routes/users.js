@@ -142,12 +142,7 @@ router.post('/logout', asyncHandler(async (req, res, next) => {
 
 router.post('/demoLogin', csurfProtection, loginValidation, asyncHandler (async (req, res, next) =>{
 
-  //const errors = validationResult(req).errors.map(e => e.msg);
   errors=[]
-
-  if (errors.length > 0) {
-    return res.render('login', {errors, csrfToken: req.csrfToken()});}
-  else {
 
     const user = await db.User.findOne({ where: { email: 'jim@jim.com' } });
     if (user) {
@@ -160,8 +155,8 @@ router.post('/demoLogin', csurfProtection, loginValidation, asyncHandler (async 
         return res.redirect(req.session.redirectTo || "/");
       }
     }
-  }
-  errors.push("Email address or password incorrect.");
+  
+  errors.push("Demo login not found.");
   return res.render("login", { errors, csrfToken: req.csrfToken() });
 }))
 
