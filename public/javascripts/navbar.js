@@ -49,7 +49,6 @@ const appendResultsToGenresContainer = (genreContainer, searchResults) => {
     movieImage.src = result.posterPath
     movieLink.appendChild(movieImage)
     movieNode.appendChild(movieLink)
-    //console.log(result)
     genreContainer.appendChild(movieNode)
     
   }
@@ -68,9 +67,7 @@ const createSearchResultsStaticDOMTreeElements = (searchResults)=>{
   const moviesContainer = createElementWithClass("div", "movies-container")
   const genreHeading = createElementWithClass("div", "genre-heading")
   const genreName = createElementWithClass("p", "genre-name")
-  genreName.innerHTML =`${searchResults.length} Search result(s):`
-  //genreName.setAttribute("innerText", `${searchResults.length} Search result(s):`)
-  
+  genreName.innerHTML =`${searchResults.length} Search result(s):`  
   const genreContainer = createElementWithClass("div", "genre-container")
   // here we need to add a function to append movie-items
   const genreContainerWithResults = appendResultsToGenresContainer(genreContainer, searchResults)
@@ -102,7 +99,6 @@ const populateMainDivWithSearchResults = (searchResults) => {
   const handleDebouncedSearch = debounce(async (ev) => {
   // Do stuff with the event!
   const search = ev.target.value
-  console.log(search, "EV")
   let res = await fetch('/search', {
     method: "POST",
     headers: { 'Content-Type': 'application/json' },
@@ -110,18 +106,12 @@ const populateMainDivWithSearchResults = (searchResults) => {
   });
   let content = await res.json();
   if (search == ""){
-    // const {genres_, topMovies} = content;
-    // const topMoviesWrapper = createTopMoviesWrapper(topMovies)
     window.location.replace("/")
 
 
   }else{
 
     const { results } = content;
-    console.log(content, "This is content")
-  
-    console.log(results)
-    //clearOutMainDiv()
     populateMainDivWithSearchResults(results)
 
 
@@ -136,5 +126,81 @@ const populateMainDivWithSearchResults = (searchResults) => {
 
   const searchBar = document.getElementById("searchBar")
   searchBar.addEventListener("keydown", handleDebouncedSearch )
+
+
+
+  const rating1Star = document.getElementById("rating-1-star")
+  rating1Star.addEventListener("click", e =>{
+    const allRatings = document.querySelectorAll('input[type="radio"]')
+    for (let index = 0; index < allRatings.length; index++) {
+      const element = allRatings[index];
+      element.removeAttribute("checked")
+      
+    }
+    const rating = document.getElementById("rating-1")
+    rating.setAttribute("checked", !rating.checked)
+  })
+
+
+  const rating2Star = document.getElementById("rating-2-star")
+  rating2Star.addEventListener("click", e =>{
+    const allRatings = document.querySelectorAll('input[type="radio"]')
+    for (let index = 0; index < allRatings.length; index++) {
+      const element = allRatings[index];
+      element.removeAttribute("checked")
+      
+    }
+    const rating = document.getElementById("rating-2")
+    rating.setAttribute("checked", !rating.checked)
+  })
+  
+
+
+
+  const rating3Star = document.getElementById("rating-3-star")
+  
+
+  rating3Star.addEventListener("click", e =>{
+    const allRatings = document.querySelectorAll('input[type="radio"]')
+    for (let index = 0; index < allRatings.length; index++) {
+      const element = allRatings[index];
+      element.removeAttribute("checked")
+      
+    }
+    const rating = document.getElementById("rating-3")
+    rating.setAttribute("checked", !rating.checked)
+  })
+
+
+  const rating4Star = document.getElementById("rating-4-star")
+  
+
+  rating4Star.addEventListener("click", e =>{
+    const allRatings = document.querySelectorAll('input[type="radio"]')
+    for (let index = 0; index < allRatings.length; index++) {
+      const element = allRatings[index];
+      element.removeAttribute("checked")
+      
+    }
+    const rating = document.getElementById("rating-4")
+    rating.setAttribute("checked", !rating.checked)
+  })
+
+
+  const rating5Star = document.getElementById("rating-5-star")
+  
+
+  rating5Star.addEventListener("click", e =>{
+    const allRatings = document.querySelectorAll('input[type="radio"]')
+    for (let index = 0; index < allRatings.length; index++) {
+      const element = allRatings[index];
+      element.removeAttribute("checked")
+      
+    }
+    const rating = document.getElementById("rating-5")
+    rating.setAttribute("checked", !rating.checked)
+  })
+
+
 
 })

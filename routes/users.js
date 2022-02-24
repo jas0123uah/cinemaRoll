@@ -88,7 +88,7 @@ router.post("/signup", csurfProtection, signupValidation, asyncHandler(async fun
     });
 
     loginUser(req, res, user);
-    return res.redirect('/');
+    return res.redirect(req.session.redirectTo || "/")
   }
 
 }));
@@ -121,7 +121,7 @@ router.post('/login', csurfProtection, loginValidation, asyncHandler (async (req
       );
       if (isPasswords) {
         loginUser(req, res, user);
-        return res.redirect("/");
+        return res.redirect(req.session.redirectTo ||"/");
       }
     }
   }
@@ -135,7 +135,7 @@ router.get('/login', csurfProtection,  (req, res, next) =>{
 
 router.post('/logout', asyncHandler(async (req, res, next) => {
   logoutUser(req);
-  return res.redirect("/");
+  return res.redirect(req.session.redirectTo || "/");
 }))
 
 
@@ -157,7 +157,7 @@ router.post('/demoLogin', csurfProtection, loginValidation, asyncHandler (async 
       );
       if (isPasswords) {
         loginUser(req, res, user);
-        return res.redirect("/");
+        return res.redirect(req.session.redirectTo || "/");
       }
     }
   }
@@ -192,7 +192,8 @@ router.get('/:userId(\\d+)/movielists/:movieListId(\\d+)', csurfProtection, asyn
       res.render(`getMovieList`, movieList, csrfToken);
       
     }else{
-       res.redirect('http://localhost:8080/users/login');
+       req.session.redirectTo =req.originalUrl
+       res.redirect(req.session.redirectTo || '/');
 
     }
 }));
@@ -209,7 +210,7 @@ router.post('/:id(\\d+)/movielists/', asyncHandler( async (req, res) => {
     if (validatorErrors.isEmpty()) {
       await db.MovieList.create({name, userId});
     
-      res.redirect(`http://localhost:8080/users/${userId}/movielists/` );
+      res.redirect(req.session.redirectTo || '/' );
     } else {
       const errors = validatorErrors.array().map((error) => error.msg);
       console.error(errors)
@@ -232,7 +233,7 @@ router.patch('/:id(\\d+)/movielists/:id(\\d+)/edit',  asyncHandler( async (req, 
     if (validatorErrors.isEmpty()) {
       await db.MovieList.create({name, userId});
     
-      res.redirect(`http://localhost:8080/users/${userId}/movielists/` );
+      res.redirect(req.session.redirectTo || '/' );
     } else {
       const errors = validatorErrors.array().map((error) => error.msg);
       console.error(errors)
@@ -258,7 +259,7 @@ router.post('/:id(\\d+)/movielists/:id(\\d+)/delete', asyncHandler( async (req, 
       res.render(`getMovieList`, movieList);
       
     }else{
-       res.redirect('http://localhost:8080/users/login');
+       res.redirect(req.session.redirectTo || '/');
 
     }
 

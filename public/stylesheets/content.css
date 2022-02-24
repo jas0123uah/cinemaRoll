@@ -146,6 +146,11 @@ h1 {
     transition: 500ms;
     width: 100px;
 }
-button.util_btn#deleteButton, button.util_btn#editButton{
+button.util_btn#deleteButton, button.util_btn#editButton, button.util_btn#leaveAReviewButton{
     min-height: 30px;
+}
+
+button.util_btn#leaveAReviewButton{
+    margin-top: 16px;
+    margin-bottom: 16px;
 }
