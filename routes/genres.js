@@ -3,6 +3,7 @@ const {asyncHandler, csurfProtection} = require('./utils')
 const db = require('../db/models');
 const router = express.Router();
 router.get('/', csurfProtection, asyncHandler( async (req, res, next) => {
+  req.session.redirectTo =req.originalUrl
   const csrfToken = req.csrfToken()
   const allMovies = await db.Movie.findAll({
     order: [db.Sequelize.fn("RANDOM")],
@@ -121,6 +122,7 @@ router.get('/', csurfProtection, asyncHandler( async (req, res, next) => {
 router.get(
   "/:genre([A-Za-z]+)|(Science\sFiction)",
   csurfProtection, asyncHandler(async (req, res) => {
+    req.session.redirectTo =req.originalUrl
 
     const csrfToken = req.csrfToken()
     
