@@ -60,16 +60,27 @@ block content
                                         button(class="util_btn" id="editButton" href=`/movies/${movieObj.id}/reviews/${hasCurrentReviewId}/edit`) Edit review
                                     
                                     form(type="submit" method="post" action=`/movies/${movieObj.id}/reviews/${hasCurrentReviewId}/delete` id="formFordelete" )
+                                        input(type='hidden' name='_csrf' value=csrfToken)
                                         button(type="submit" class="util_btn" id="deleteButton") Delete review
                                 
                         p
                     else
                         if !reviews.length
                             span.reviewTitle There are currently no reviews
-                            p
-                            a(href=`/movies/${movieObj.id}/reviews/new` id="reviewButton") Leave a review!
+
+                            form(type="submit" method="get" action=`/movies/${movieObj.id}/reviews/new` id="formForedit")
+                                        button(class="util_btn" id="leaveAReviewButton" href=`/movies/${movieObj.id}/reviews/${hasCurrentReviewId}/edit`) Leave a review
+
+
+
+
+
+
+                            //- p
+                            //- a(href=`/movies/${movieObj.id}/reviews/new` id="reviewButton") Leave a review!
                         else 
-                            a(href=`/movies/${movieObj.id}/reviews/new` id="reviewButton") Leave a review!
+                            form(type="submit" method="get" action=`/movies/${movieObj.id}/reviews/new` id="formForedit")
+                                        button(class="util_btn" id="leaveAReviewButton" href=`/movies/${movieObj.id}/reviews/${hasCurrentReviewId}/edit`) Leave a review
                         
                 if reviews.length
                     each singleReview in reviews
