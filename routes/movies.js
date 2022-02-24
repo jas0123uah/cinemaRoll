@@ -24,12 +24,14 @@ const movieValidators = [
 
 // should re-direct to genres to display "all movies"
 router.get("/", asyncHandler(async (req, res) => {
+  req.session.redirectTo =req.originalUrl
   res.redirect("/genres");
 }));
 
 
 //DONE: GETS MOVIE BY ID
 router.get("/:id(\\d+)", asyncHandler(async (req, res, next) => {
+  req.session.redirectTo =req.originalUrl
   const movieId = parseInt(req.params.id);
   const movie = await db.Movie.findByPk(movieId);
   const genreId = await db.genresToMovieJoinTable.findOne({ where: { movieId: movieId}});
@@ -131,6 +133,7 @@ router.get("/:id(\\d+)", asyncHandler(async (req, res, next) => {
 
 // DONE: GETS ALL REVIEWS ASSOCIATED W/MOVIE
 router.get('/:id(\\d+)/reviews/', asyncHandler( async (req, res, next) => {
+  req.session.redirectTo =req.originalUrl
   //Get all reviews associated w/ a movie
   const movieId = req.params.id
 
@@ -164,7 +167,6 @@ router.post('/:id(\\d+)/reviews/', csurfProtection, movieValidators, asyncHandle
 
   //Add a new review for a given movie
   if (!req.session.auth) {
-    //req.session.redirectTo =
     res.redirect("/users/login/");
 
   }
@@ -238,6 +240,7 @@ router.post('/:id(\\d+)/reviews/', csurfProtection, movieValidators, asyncHandle
 //DONE: Gets form for new movie review
 router.get('/:id(\\d+)/reviews/new/', csurfProtection, asyncHandler( async (req, res) => {
   //Get the form to add a review that will be associated w/ a movie
+  req.session.redirectTo =req.originalUrl
   const movieId = req.params.id;
   const genreId = await db.genresToMovieJoinTable.findOne({
     where: { movieId: movieId },
@@ -251,6 +254,7 @@ router.get('/:id(\\d+)/reviews/new/', csurfProtection, asyncHandler( async (req,
   });
 
   if (!req.session.auth) {
+    req.session.redirectTo =req.originalUrl
 
     res.redirect(`/users/login/`)
 
@@ -296,7 +300,7 @@ router.get('/:id(\\d+)/reviews/:reviewId(\\d+)/edit',csurfProtection, asyncHandl
 
 
   if (!req.session.auth) {
-
+    req.session.redirectTo =req.originalUrl
     res.redirect(`/users/login/`)
 
   }
@@ -340,7 +344,6 @@ router.post('/:id(\\d+)/reviews/:reviewId(\\d+)/', csurfProtection, movieValidat
       } = req.body;
 
   const validatorErrors = validationResult(req);
-  console.log(validatorErrors, "ERRORS")
 
   if (validatorErrors.isEmpty()){
     try{
@@ -356,7 +359,7 @@ router.post('/:id(\\d+)/reviews/:reviewId(\\d+)/', csurfProtection, movieValidat
       };
         await specificReview.update(review);
     
-    
+
         res.redirect(`/movies/${movieId}/`);
 
 

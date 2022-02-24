@@ -9,6 +9,7 @@ const router = express.Router();
 
 /* GET home page. */
 router.get('/', csurfProtection, asyncHandler(async (req, res) => {
+  req.session.redirectTo =req.originalUrl
   // the template expects genres in sub-arrays of size 5
   const csrfToken = req.csrfToken()
   const genres_ = await db.Genre.findAll().map(g => g.dataValues);
